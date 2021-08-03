@@ -413,7 +413,7 @@
         })(jQuery));
 
         //头像下拉操作自动关闭
-        $('.dropdown-menu li a').click(function () {
+        $('.nav-header .dropdown-menu li a').click(function () {
             if ($(this).parents('.dropdown').size() && (toggle = $(this).parents('.dropdown').find('a.dropdown-toggle'))) {
                 $(this).parents('.dropdown .dropdown-menu li.active').removeClass('active');
                 toggle.trigger('click');
