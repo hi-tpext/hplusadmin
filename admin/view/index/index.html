@@ -423,6 +423,8 @@
 
         setSidebar(json_str);
 
+        $('#side-menu-out ul.sub-nav-item').metisMenu();
+
         $('a.open-tab').click(function () {
             $.fn.multitabs().create(this, true);
             return false;
