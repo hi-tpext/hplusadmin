@@ -84,6 +84,37 @@
         .sub-nav-item.preview li>a {
             color: #5d636f;
         }
+
+        /**dark mode**/
+        body[data-theme="dark"] {
+            background-color: #1c1e2f;
+            color: #8c909a;
+        }
+
+        [data-theme="dark"] #right-sidebar,
+        [data-theme="dark"] .sidebar-container .sidebar-title {
+            background-color: #1c1e2f;
+            color: #8c909a;
+        }
+
+        [data-theme="dark"] .navbar-fixed-top,
+        [data-theme="dark"] .navbar-static-top,
+        [data-theme="dark"] .content-tabs button,
+        [data-theme="dark"] .content-tabs {
+            background-color: #2f4050;
+            color: #8c909a;
+        }
+
+        [data-theme="dark"] .page-tabs a.active {
+            background: #687682;
+            color: #bec6d2;
+        }
+
+        [data-theme="dark"] .content-tabs .roll-nav:hover,
+        [data-theme="dark"] .page-tabs a:hover {
+            background: #bec1c8;
+            color: #605d5d;
+        }
     </style>
 </head>
 
@@ -215,6 +246,18 @@
                 </div>
                 <div class="skin-setttings">
                     <div class="title">主题设置</div>
+                    <div class="setings-item">
+                        <span>暗黑模式</span>
+                        <div class="switch">
+                            <div class="onoffswitch">
+                                <input type="checkbox" name="site_theme" class="onoffswitch-checkbox" id="site_theme">
+                                <label class="onoffswitch-label" for="site_theme">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                     <div class="setings-item">
                         <span>收起左侧菜单</span>
                         <div class="switch">
@@ -522,6 +565,26 @@
 
             return false;
         });
+
+        var data_name = 'data-theme';
+        var site_theme = localStorage.getItem('site_theme') || 'default';
+
+        $('body').attr(data_name, site_theme);
+        $('iframe').each(function (i, e) {
+            $(e).contents().find('body').attr(data_name, site_theme);
+        });
+
+        $('#site_theme').change(function () {
+            var val = $(this).is(':checked') ? 'dark' : 'default';
+            localStorage.setItem('site_theme', val);
+            $('body').attr(data_name, val);
+            $('iframe').each(function (i, e) {
+                $(e).contents().find('body').attr(data_name, val);
+            });
+        });
+        if (site_theme == 'dark') {
+            $('#site_theme').attr('checked', true);
+        }
     </script>
 </body>
 
