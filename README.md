@@ -2,7 +2,7 @@
 
 ## 关于
 
-替换默认的:`/admin/admin/index`主体页面样式和登录页面`/admin/admin/login`样式
+替换默认的:`/admin/index/index`主体页面样式和登录页面`/admin/index/login`样式
 
 ## 使用
 
