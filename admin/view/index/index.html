@@ -105,15 +105,51 @@
             color: #8c909a;
         }
 
-        [data-theme="dark"] .page-tabs a.active {
-            background: #687682;
+        [data-theme="dark"] .page-tabs a {
             color: #bec6d2;
+            border-right: solid 1px #30353e;
+        }
+
+        [data-theme="dark"] .page-tabs a.active {
+            background: #394f62;
+            color: #c7d0df;
         }
 
         [data-theme="dark"] .content-tabs .roll-nav:hover,
         [data-theme="dark"] .page-tabs a:hover {
             background: #bec1c8;
             color: #605d5d;
+        }
+
+        [data-theme="dark"] .skin-setttings .title {
+            color: #605d5d;
+        }
+
+        [data-theme="dark"] .border-bottom {
+            border-bottom: 1px solid #30353e !important;
+        }
+
+        [data-theme="dark"] .dropdown-menu,
+        .nav .open>a,
+        .nav .open>a:focus,
+        .nav .open>a:hover {
+            background: #687682;
+            color: #bec6d2;
+        }
+
+        [data-theme="dark"] .content-tabs .roll-left {
+            border-right: solid 1px #30353e;
+            color: #a8acb7;
+        }
+
+        [data-theme="dark"] .content-tabs .roll-right {
+            border-left: solid 1px #30353e;
+            border-right: solid 1px #30353e;
+            color: #a8acb7;
+        }
+
+        [data-theme="dark"] .page-tabs a i {
+            color: #a8acb7;
         }
     </style>
 </head>
@@ -169,17 +205,6 @@
                         <ul class="nav navbar-top-links" id="top-menu-out">
                             <li class="navbar-right">
                                 <ul>
-                                    <li>
-                                        <a title="打开首页" class="link" href="/" target="_blank"><i
-                                                class="mdi mdi-home"></i></a>
-                                    </li>
-                                    {if condition="checkUrl(url('/admin/index/clearcache'))"}
-                                    <li>
-                                        <a title="清空缓存" class="link J_menuItem"
-                                            href="{:url('/admin/index/clearcache')}"><i class="mdi
-                                mdi-delete"></i><span class="hidden">清空缓存</span></a>
-                                    </li>
-                                    {/if}
                                     <!--
                                         扩展右侧链接
                                         ****************** tags.php注册 ********************
@@ -194,8 +219,19 @@
                                                 echo '<li><a href="xxx">我的链接</a></li>';
                                             }
                                         }
-                                        -->
+                                    -->
                                     {:\\tpext\\common\\ExtLoader::trigger('topbar_right_links')}
+                                    <li>
+                                        <a title="打开首页" class="link" href="/" target="_blank"><i
+                                                class="mdi mdi-home"></i></a>
+                                    </li>
+                                    {if condition="checkUrl(url('/admin/index/clearcache'))"}
+                                    <li>
+                                        <a title="清空缓存" class="link J_menuItem"
+                                            href="{:url('/admin/index/clearcache')}"><i class="mdi
+                                mdi-delete"></i><span class="hidden">清空缓存</span></a>
+                                    </li>
+                                    {/if}
                                     <li class="dropdown">
                                         <a class="right-sidebar-toggle" aria-expanded="false">
                                             <i class="mdi mdi-palette"></i>
