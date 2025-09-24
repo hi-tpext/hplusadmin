@@ -7,7 +7,7 @@ use tpext\myadmin\common\Module as adminModule;
 
 class Resource extends baseResource
 {
-    protected $version = '1.0.9';
+    protected $version = '1.0.10';
 
     protected $name = 'hplus.admin';
 

@@ -97,6 +97,14 @@
             color: #8c909a;
         }
 
+        .content-tabs {
+            border-bottom: 1px solid #eee;
+        }
+
+        [data-theme="dark"] .content-tabs {
+            border-bottom: 1px solid #30353e;
+        }
+
         [data-theme="dark"] .navbar-fixed-top,
         [data-theme="dark"] .navbar-static-top,
         [data-theme="dark"] .content-tabs button,
@@ -161,7 +169,7 @@
             <div class="nav-close"><i class="fa fa-times-circle"></i>
             </div>
             <div class="sidebar-collapse" id="side-menu-out">
-                <ul class="nav sidebar-main">
+                <ul class="nav sidebar-main" id="side-menu">
                     <li class="nav-header">
                         <div class="dropdown profile-element text-center">
                             <div class="left_title"><b>{$admin_page_title|default='admin'}</b></div>
@@ -295,6 +303,18 @@
                         </div>
                     </div>
                     <div class="setings-item">
+                        <span>顶部菜单</span>
+                        <div class="switch">
+                            <div class="onoffswitch">
+                                <input type="checkbox" name="top_menu" class="onoffswitch-checkbox" id="top_menu">
+                                <label class="onoffswitch-label" for="top_menu">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setings-item">
                         <span>收起左侧菜单</span>
                         <div class="switch">
                             <div class="onoffswitch">
@@ -379,7 +399,7 @@
         charset="utf-8"></script>
 
     <script>
-        var hasTopMenu = '{$index_top_menu ?? 0}' == '1';
+        var hasTopMenu = localStorage.getItem('top_menu');
 
         var setSidebar = function (data) {
             if (data.length == 0) {
@@ -387,9 +407,12 @@
             }
             var treeObj = treeData(data, 'id', 'pid', 'children');
 
-            if (hasTopMenu) {
+            $('#top-menu-out .nav-item').remove();
+            $('.navbar-header').removeClass('has-top-meun');
+            $('.sidebar-main li').not('.nav-header').remove();
+            $('#side-menu').nextAll('ul.sidebar-main').remove();
+            if (hasTopMenu == 1 || '{$index_top_menu ?? 0}' == '1') {
                 $('.navbar-header').addClass('has-top-meun');
-
                 for (var i = 0; i < treeObj.length; i++) {
                     var children = treeObj[i].children;
                     if (!children || !children.length) {
@@ -403,6 +426,7 @@
                     }
 
                     $('#side-menu-out').append('<ul id="sub-nav-' + treeObj[i].id + '" class="nav sub-nav-item sidebar-main ' + (i == 0 ? '' : ' hidden') + '">' + html + '</ul>');
+                    $("#sub-nav-" + treeObj[i].id).metisMenu();
                 }
 
                 $('body').on('click', '#top-menu-out li.nav-item', function () {
@@ -430,7 +454,7 @@
             }
             else {
                 var html = createMenu(treeObj, 0);
-                $('.sidebar-main').attr('id', 'side-menu').append(html);
+                $('.sidebar-main').append(html);
             }
         }
 
@@ -501,8 +525,6 @@
         var json_str = '{$menus|raw}';
 
         setSidebar(json_str);
-
-        $('#side-menu-out ul.sub-nav-item').metisMenu();
 
         $('a.open-tab').click(function () {
             $.fn.multitabs().create(this, true);
@@ -603,7 +625,7 @@
         });
 
         var data_name = 'data-theme';
-        var site_theme = localStorage.getItem('site_theme') || 'default';
+        var site_theme = localStorage.getItem('site_theme') || 'light';
 
         $('body').attr(data_name, site_theme);
         $('iframe').each(function (i, e) {
@@ -611,16 +633,26 @@
         });
 
         $('#site_theme').change(function () {
-            var val = $(this).is(':checked') ? 'dark' : 'default';
+            var val = $(this).is(':checked') ? 'dark' : 'light';
             localStorage.setItem('site_theme', val);
             $('body').attr(data_name, val);
-            $('iframe').each(function (i, e) {
-                $(e).contents().find('body').attr(data_name, val);
+            $('iframe').each(function (i, el) {
+                $(el).contents().find('body').attr(data_name, val);
+                if (el.contentWindow) {
+                    el.contentWindow.postMessage({
+                        type: 'change_theme',
+                        theme: val
+                    }, '*');
+                }
             });
         });
-        if (site_theme == 'dark') {
-            $('#site_theme').attr('checked', true);
-        }
+
+        $('#top_menu').change(function () {
+            hasTopMenu = $(this).is(':checked') ? '1' : '0';
+            setSidebar(json_str);
+            $("#side-menu").metisMenu();
+            localStorage.setItem('top_menu', hasTopMenu);
+        });
     </script>
 </body>
 
